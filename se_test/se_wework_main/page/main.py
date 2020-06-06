@@ -1,20 +1,19 @@
-from selenium import webdriver
+from time import sleep
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 
 from page.add_number import AddNumber
+from page.base_page import BasePage
 
 
-class Main:
-    def __init__(self):
-        options = Options()
-        options.debugger_address = "127.0.0.1:9222"
-        self._driver = webdriver.Chrome(options=options)  # 复用模式
-        self._driver.get('https://work.weixin.qq.com/wework_admin/frame')
-        self._driver.maximize_window()
-        self._driver.implicitly_wait(3)
+class Main(BasePage):
+    _base_page = 'https://work.weixin.qq.com/wework_admin/frame'
 
     def goto_add_number(self):
-        self._driver.find_element(
-            By.CSS_SELECTOR, '.index_service_cnt_itemWrap:nth-child(1)').click()
+        # self.find(
+        #     By.CSS_SELECTOR, '.index_service_cnt_itemWrap:nth-child(1)')
+        #     .click()
+        self.find(By.ID, 'menu_contacts').click()
+        sleep(3)
+        self.find(By.CSS_SELECTOR,
+                  '.js_has_member>div:nth-child(1) .js_add_member').click()
         return AddNumber(self._driver)
